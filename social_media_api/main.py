@@ -4,6 +4,9 @@ import json
 
 app=FastAPI()
 
+class User(BaseModel):
+    name:str
+    age:int
 
 # GET Requests
 
@@ -32,3 +35,11 @@ def items(name:str=None,price:float=0.0):
     return{"You bought ":name, "Total Price is ":price}
 
 
+# Request Body
+
+@app.post('/create_user')
+def create_post(user:User):
+    return{
+        "message":"User created",
+        'data':user
+    }
