@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import json
 
 app=FastAPI()
 
@@ -17,4 +18,17 @@ def about():
 @app.get("/users")
 def users():
     return{"users":['Ahmad','Mohit','Rohit','Sunil']}
+
+
+# Path Parameters 
+
+@app.get("/get_userid/{userid}")
+def get_userid(userid:int):
+    return {"user_id":userid}
+
+# Query params
+@app.get("/items")
+def items(name:str=None,price:float=0.0):
+    return{"You bought ":name, "Total Price is ":price}
+
 
