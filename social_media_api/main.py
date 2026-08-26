@@ -61,3 +61,20 @@ def create_user(user:Create_pd_user):
             'message' :"user created",
             "data":user
         }
+
+
+# Request Model 
+class Create_User(BaseModel):
+    username:str
+    age:int
+    password:str
+
+# Response Model 
+class User_Response(BaseModel):
+    username:str
+    age:int
+
+@app.get("/create_user_req", response_model=User_Response)
+def create_user_re_model(user:Create_User):
+    return {"message":"User is created",
+            "data":user}
