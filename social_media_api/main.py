@@ -38,8 +38,26 @@ def items(name:str=None,price:float=0.0):
 # Request Body
 
 @app.post('/create_user')
-def create_post(user:User):
+def create_users(user:User):
     return{
         "message":"User created",
         'data':user
     }
+
+class Address(BaseModel):
+    city:str
+    pincode:int
+
+class Create_pd_user(BaseModel):
+    name:str
+    age:int
+    address:Address
+
+    
+
+@app.post('/create-pydantic-user')
+def create_user(user:Create_pd_user):
+        return {
+            'message' :"user created",
+            "data":user
+        }
