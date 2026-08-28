@@ -46,3 +46,4 @@ def users(name:str):
           "status":"success",
           "user":"Fairoz"
      }
+
