@@ -31,3 +31,18 @@ def users(user_id:int):
         "message":"User Found",
         "name":"Fairoz"
     }
+
+# Advanced Exception Handling
+class UserNotFoundException(Exception):
+    def __init__(self,name):
+            self.name==name
+
+
+@app.get('/get_users/{name}')
+def users(name:str):
+     if name!="feroz":
+          raise UserNotFoundException(name)
+     return {
+          "status":"success",
+          "user":"Fairoz"
+     }
