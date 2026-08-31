@@ -57,3 +57,19 @@ def get_todos(db:Session=Depends(get_db)):
         "message":"Success",
         "data":todos
     }
+
+# Get using ID's
+
+@app.get("/get_todo/{todo_id}")
+def get_todo(todo_id:int,db:Session=Depends(get_db)):
+    todo=db.query(Todo).filter(Todo.id==todo_id).first()
+
+    if not todo :
+        raise HTTPException(
+            status_code=404,
+            detail="Not a valid ID "
+        )
+    return {
+        "message":"Success",
+        "data":todo
+    }
