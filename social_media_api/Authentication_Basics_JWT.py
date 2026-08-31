@@ -13,7 +13,7 @@ ALGORITHM='HS256'
 
 def create_token(data:dict):
     to_encode=data.copy()
-    expire=datetime(timezone.utc)+timedelta(minutes=30)
+    expire=datetime.now(timezone.utc)+timedelta(minutes=30)
     to_encode.update({
         "exp":expire
     })
