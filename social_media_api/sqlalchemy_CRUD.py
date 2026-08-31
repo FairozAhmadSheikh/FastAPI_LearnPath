@@ -73,3 +73,40 @@ def get_todo(todo_id:int,db:Session=Depends(get_db)):
         "message":"Success",
         "data":todo
     }
+
+# Update a Post 
+
+@app.put("/update_todo/{todo_id}")
+def update_todo(todo_id:int, title:str,db:Session=Depends(get_db)):
+    todo=db.query(Todo).filter(Todo.id==todo_id).first()
+
+    if not todo:
+        raise HTTPException(
+            status_code=404,
+            detail="Invalid ID"
+        )
+    todo.title=title
+
+    db.commit()
+    db.refresh(todo)
+    return {
+        "message":"Todo Updated",
+        "data":todo
+    }
+
+
+# Delete a post
+
+@app.delete("/todo/{todo_id}")
+def delete_todo(todo_id:int,db:Session=Depends(get_db)):
+    todo=db.query(Todo).filter(Todo.id==todo_id).first()
+    if not todo:
+        raise HTTPException(
+            status_code=404,
+            detail="Post ID Invalid"
+        )
+    db.delete(todo)
+    db.commit()
+    return{
+        "message":f'Deleted Post with id {todo_id}'
+    }
