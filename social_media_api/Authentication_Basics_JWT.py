@@ -31,3 +31,23 @@ def login(username:str,password:str):
         'sub':username
     })
     return{"access token":token}
+
+
+# Verify token
+
+def verify_token(token:str=Header(None)):
+    try:
+        payload=jwt.decode(token,SECRET_KEY,algorithms=[ALGORITHM])
+        return payload
+    except:
+        raise HTTPException(status_code=401,
+                            detail="Invalid or Expired Token")
+
+# Protected Route
+
+@app.get("/secured")
+def secured(user=Depends(verify_token)):
+    return {
+        "message":"Secured Data Accessed",
+        "user":user
+    }
