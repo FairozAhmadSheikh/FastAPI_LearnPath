@@ -71,3 +71,12 @@ def verify_token(token:str=Depends(oauth2_schema)):
         return username 
     except JWTError:
         raise HTTPException(status_code=401, detail="Invalid Token")
+
+
+# Protected Route
+@app.get("/protected")
+def protected_route(username:str=Depends(verify_token)):
+    return {
+        "message":"Access granted to protected data",
+        "user":username
+    }
