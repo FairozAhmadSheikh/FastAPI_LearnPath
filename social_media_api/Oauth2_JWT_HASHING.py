@@ -36,6 +36,17 @@ def verify_hash(password:str,hashed_password:str):
 
 
 
+# Create Token 
+def create_token(data:dict):
+    to_encode=data.copy()
+    expire=datetime.now(timezone.utc)+timedelta(minutes=ACCESS_TOKEN_EXPIRY_MINUTES)
+    to_encode.update({
+        "exp":expire
+    })
+    token=jwt.encode(to_encode,SECRET_KEY,ALGORITHM)
+    return token
+    
+
 
 @app.post("/login")
 def login():
