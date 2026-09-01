@@ -20,7 +20,7 @@ oauth2_schema=OAuth2PasswordBearer(tokenUrl="login")
 fake_database_user={
     "admin":{
         "username":"admin",
-        "password":pwd_context.hash("1234")
+        "hashed_password":pwd_context.hash("1234")
     }
 }
 
@@ -31,7 +31,7 @@ def create_hash(passowrd:str):
     return pwd_context.hash(passowrd)
 
 
-def verify_hash(password:str,hashed_password:str):
+def verify_password(password:str,hashed_password:str):
     return pwd_context.verify(password,hashed_password)
 
 
@@ -45,9 +45,16 @@ def create_token(data:dict):
     })
     token=jwt.encode(to_encode,SECRET_KEY,ALGORITHM)
     return token
-    
 
 
+# Login API (Oauth2 Token Generator)
 @app.post("/login")
-def login():
-    return{}
+def login(form_data:OAuth2PasswordRequestForm=Depends()):
+    user=fake_database_user.get(form_data.username)
+    if not user or not verify_password(form_data.password,user["hashed_password"]):
+        raise HTTPException(status_code=401,detail="Invalid Token")
+    access_token=create_token({"sub":form_data.username})
+    return{
+        "access_token":access_token,
+        "bearer":"bearer"
+    }
