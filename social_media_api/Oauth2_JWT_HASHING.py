@@ -26,6 +26,16 @@ fake_database_user={
 
 
 
+# Create and verify hash  functions
+def create_hash(passowrd:str):
+    return pwd_context.hash(passowrd)
+
+
+def verify_hash(password:str,hashed_password:str):
+    return pwd_context.verify(password,hashed_password)
+
+
+
 
 @app.post("/login")
 def login():
